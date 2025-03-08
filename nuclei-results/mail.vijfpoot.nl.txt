@@ -1,0 +1,19 @@
+[waf-detect:cloudflare] [http] [info] https://mail.vijfpoot.nl
+[waf-detect:apachegeneric] [http] [info] https://mail.vijfpoot.nl
+[waf-detect:nginxgeneric] [http] [info] https://mail.vijfpoot.nl
+[tls-version] [ssl] [info] mail.vijfpoot.nl:443 ["tls13"]
+[http-missing-security-headers:permissions-policy] [http] [info] https://mail.vijfpoot.nl
+[http-missing-security-headers:x-frame-options] [http] [info] https://mail.vijfpoot.nl
+[http-missing-security-headers:clear-site-data] [http] [info] https://mail.vijfpoot.nl
+[http-missing-security-headers:cross-origin-opener-policy] [http] [info] https://mail.vijfpoot.nl
+[http-missing-security-headers:cross-origin-resource-policy] [http] [info] https://mail.vijfpoot.nl
+[http-missing-security-headers:content-security-policy] [http] [info] https://mail.vijfpoot.nl
+[http-missing-security-headers:x-permitted-cross-domain-policies] [http] [info] https://mail.vijfpoot.nl
+[http-missing-security-headers:referrer-policy] [http] [info] https://mail.vijfpoot.nl
+[http-missing-security-headers:cross-origin-embedder-policy] [http] [info] https://mail.vijfpoot.nl
+[tech-detect:cloudflare] [http] [info] https://mail.vijfpoot.nl
+[soa-detect:cloudflare] [dns] [info] mail.vijfpoot.nl
+[caa-fingerprint] [dns] [info] mail.vijfpoot.nl
+[ssl-issuer] [ssl] [info] mail.vijfpoot.nl:443 ["Google Trust Services"]
+[ssl-dns-names] [ssl] [info] mail.vijfpoot.nl:443 ["vijfpoot.nl","*.vijfpoot.nl"]
+[wildcard-tls] [ssl] [info] mail.vijfpoot.nl:443 ["CN: vijfpoot.nl","SAN: [vijfpoot.nl *.vijfpoot.nl]"]

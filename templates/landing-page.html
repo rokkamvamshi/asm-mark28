@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attack Surface Management</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('../static/images/hero-bg.jpeg') no-repeat center center/cover;
+            color: white;
+            text-align: center;
+            padding: 150px 20px;
+        }
+        .feature-icon {
+            font-size: 4rem;
+            color: #007bff;
+        }
+        .cta-btn {
+            background-color: #007bff;
+            color: white;
+            padding: 15px 40px;
+            border-radius: 30px;
+            font-size: 1.5rem;
+        }
+        .card-hover:hover {
+            transform: scale(1.05);
+            transition: 0.3s ease-in-out;
+        }
+        footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">ASM</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="about-us">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="login">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="signup">Sign Up</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <h1 class="display-4">Uncover Your Attack Surface. Stay Secure.</h1>
+        <p class="lead">Automated security scanning for your domains with actionable insights.</p>
+        <a href="#features" class="btn cta-btn">Get Started for Free</a>
+    </section>
+
+    <section id="features" class="container text-center my-5">
+        <h2 class="mb-4">Key Features</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card shadow card-hover p-4">
+                    <i class="fas fa-network-wired feature-icon"></i>
+                    <h4>Subdomain Enumeration</h4>
+                    <p>Discover all subdomains associated with your domain.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card shadow card-hover p-4">
+                    <i class="fas fa-bug feature-icon"></i>
+                    <h4>Vulnerability Detection</h4>
+                    <p>Identify potential security threats across your assets.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card shadow card-hover p-4">
+                    <i class="fas fa-chart-line feature-icon"></i>
+                    <h4>Comprehensive Reporting</h4>
+                    <p>Get detailed insights and take action effectively.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Attack Surface Management | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+        <p>Follow us: <a href="#"><i class="fab fa-linkedin"></i></a> <a href="#"><i class="fab fa-github"></i></a> <a href="#"><i class="fab fa-twitter"></i></a></p>
+    </footer>
+</body>
+</html>

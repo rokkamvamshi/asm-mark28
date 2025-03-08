@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vulnerability Scan Results</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        .severity-high { background-color: #dc3545; color: #fff; }
+        .severity-medium { background-color: #fd7e14; color: #fff; }
+        .severity-low { background-color: #ffc107; color: #000; }
+        .severity-info { background-color: #17a2b8; color: #fff; }
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scan Results Chart</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container mt-5" >
+        <h2 class="text-center mb-4">Scan Results for <strong>florein.elanza.nl</strong></h2>
+
+        <div class="d-flex justify-content-between mb-4">
+            <div>
+                <p><strong>Scan Date:</strong> January 26, 2025</p>
+                <p><strong>Total Findings:</strong> 5 High, 2 Medium, 3 Low, 10 Info</p>
+            </div>
+            <div>
+                <button class="btn btn-primary">Re-Scan</button>
+            </div>
+            <div class="text-center mt-4">
+                <a href="{% url 'export_csv' scan_id=scan.id %}" class="btn btn-primary">Export to CSV</a>
+                <a href="{% url 'export_pdf' scan_id=scan.id %}" class="btn btn-danger">Export to PDF</a>
+            </div>
+        </div>
+    
+        <div class="mb-3">
+            <input type="text" class="form-control" placeholder="Search vulnerabilities..." id="searchInput">
+        </div>
+
+        <button class="btn btn-danger" onclick="filterSeverity('high')">High</button>
+        <button class="btn btn-warning" onclick="filterSeverity('medium')">Medium</button>
+        <button class="btn btn-info" onclick="filterSeverity('low')">Low</button>
+        <button class="btn btn-info" onclick="filterSeverity('Info')">info</button>
+
+        <table class="table table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <th>Vulnerability</th>
+                    <th>Category</th>
+                    <th>Severity</th>
+                    <th>Affected URL</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody id="resultsTable">
+                <tr>
+                    <td>Missing SRI</td>
+                    <td>HTTP</td>
+                    <td><span class="badge severity-info">Info</span></td>
+                    <td>https://florein.elanza.nl</td>
+                    <td><a href="#" class="btn btn-sm btn-info">View Details</a></td>
+                </tr>
+                <tr>
+                    <td>Deprecated TLS 1.0</td>
+                    <td>SSL</td>
+                    <td><span class="badge severity-low">Low</span></td>
+                    <td>florein.elanza.nl:443</td>
+                    <td><a href="#" class="btn btn-sm btn-info">View Details</a></td>
+                </tr>
+                <tr>
+                    <td>Weak Cipher Suites</td>
+                    <td>SSL</td>
+                    <td><span class="badge severity-low">Low</span></td>
+                    <td>florein.elanza.nl:443</td>
+                    <td><a href="#" class="btn btn-sm btn-info">View Details</a></td>
+                </tr>
+                <tr>
+                    <td>Cross-Origin Resource Policy Missing</td>
+                    <td>HTTP</td>
+                    <td><span class="badge severity-info">Info</span></td>
+                    <td>https://florein.elanza.nl</td>
+                    <td><a href="#" class="btn btn-sm btn-info">View Details</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        document.getElementById("searchInput").addEventListener("keyup", function() {
+            let filter = this.value.toLowerCase();
+            let rows = document.querySelectorAll("#resultsTable tr");
+
+            rows.forEach(row => {
+                let text = row.textContent.toLowerCase();
+                row.style.display = text.includes(filter) ? "" : "none";
+            });
+        });
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,18 @@
+[ssh-sha1-hmac-algo] [javascript] [info] mail.mbu.asia:22
+[ssh-cbc-mode-ciphers] [javascript] [low] mail.mbu.asia:22
+[ssh-server-enumeration] [javascript] [info] mail.mbu.asia:22 ["SSH-2.0-OpenSSH_8.0"]
+[ssh-password-auth] [javascript] [info] mail.mbu.asia:22
+[ssh-weakkey-exchange-algo] [javascript] [low] mail.mbu.asia:22
+[pop3-capabilities-enum] [javascript] [info] mail.mbu.asia:110 ["CAPA TOP UIDL RESP-CODES PIPELINING AUTH-RESP-CODE STLS USER SASL PLAIN LOGIN ."]
+[imap-detect] [tcp] [info] mail.mbu.asia:143
+[openssh-detect] [tcp] [info] mail.mbu.asia:22 ["SSH-2.0-OpenSSH_8.0"]
+[pop3-detect] [tcp] [info] mail.mbu.asia:110
+[mysql-detect] [tcp] [info] mail.mbu.asia:3306
+[mysql-native-password] [tcp] [info] mail.mbu.asia:3306
+[smtp-service-detect] [tcp] [info] mail.mbu.asia:25
+[smtp-service-detect] [tcp] [info] mail.mbu.asia:465
+[smtp-service-detect] [tcp] [info] mail.mbu.asia:587
+[tls-version] [ssl] [info] mail.mbu.asia:443 ["tls12"]
+[caa-fingerprint] [dns] [info] mail.mbu.asia
+[self-signed-ssl] [ssl] [low] mail.mbu.asia:443
+[ssl-dns-names] [ssl] [info] mail.mbu.asia:443 ["mbu.asia","www.mbu.asia","cpanel.mbu.asia","cpcontacts.mbu.asia","cpcalendars.mbu.asia","autodiscover.mbu.asia","mbu.vishnu.asia","mail.mbu.asia","www.mbu.vishnu.asia","webmail.mbu.asia","webdisk.mbu.asia"]

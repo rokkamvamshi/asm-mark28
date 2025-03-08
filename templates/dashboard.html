@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 class="text-center">ASM Dashboard</h2>
+
+        <!-- Overview Cards -->
+        <div class="row text-center mt-4">
+            <div class="col-md-4 mb-3">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <h5>Total Scans</h5>
+                        <h3>{{ total_scans }}</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <h5>Total Findings</h5>
+                        <h3>{{ total_vulnerabilities }}</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <h5>Critical Issues</h5>
+                        <h3 class="text-danger">{{ severity_counts.critical }}</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Severity Breakdown -->
+        <div class="row text-center">
+            <div class="col-md-2"><h6 class="text-danger">Critical: {{ severity_counts.critical }}</h6></div>
+            <div class="col-md-2"><h6 class="text-warning">High: {{ severity_counts.high }}</h6></div>
+            <div class="col-md-2"><h6 class="text-primary">Medium: {{ severity_counts.medium }}</h6></div>
+            <div class="col-md-2"><h6 class="text-success">Low: {{ severity_counts.low }}</h6></div>
+            <div class="col-md-2"><h6 class="text-muted">Info: {{ severity_counts.info }}</h6></div>
+        </div>
+
+        <!-- Domain Selection & Search -->
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <label>Select Domain:</label>
+                <select id="domainSelect" class="form-control">
+                    <option value="">-- Select Domain --</option>
+                    {% for domain in scanned_domains %}
+                        <option value="{{ domain }}">{{ domain }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label>Search Vulnerabilities:</label>
+                <input type="text" id="searchInput" class="form-control" placeholder="Search vulnerabilities...">
+            </div>
+        </div>
+
+        <!-- Toggle Info Findings Button -->
+         
+        <div class="mt-3 text-center">
+            <form method="GET" action="{% url 'dashboard' %}">
+                <input type="hidden" name="show_info" value="{% if show_info %}false{% else %}true{% endif %}">
+                <button type="submit" class="btn {% if show_info %}btn-danger{% else %}btn-primary{% endif %}">
+                    {% if show_info %}Hide Info Findings{% else %}Show Info Findings{% endif %}
+                </button>
+            </form>
+        </div>
+        
+        {% if show_info %}
+            <h4 class="mt-4">Informational Findings</h4>
+            <table class="table table-bordered table-hover">
+                <thead class="table-secondary">
+                    <tr>
+                        <th>Vulnerability</th>
+                        <th>Category</th>
+                        <th>Severity</th>
+                        <th>Subdomain</th>
+                        <th>Details</th>
+                        <th>Scan Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for result in info_results %}
+                    <tr>
+                        <td>{{ result.vulnerability }}</td>
+                        <td>{{ result.bug_class }}</td>
+                        <td><span class="badge bg-secondary">{{ result.severity|title }}</span></td>
+                        <td>{{ result.subdomain }}</td>
+                        <td>
+                            <button class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#detailsModalInfo{{ forloop.counter }}">
+                                View
+                            </button>
+                        </td>
+                        <td>{{ result.timestamp }}</td>
+                    </tr>
+        
+                    <!-- Modal for Info Details -->
+                    <div class="modal fade" id="detailsModalInfo{{ forloop.counter }}" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Scan Details</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <strong>Subdomain:</strong> {{ result.subdomain }}<br>
+                                    <strong>Category:</strong> {{ result.bug_class }}<br>
+                                    <strong>Severity:</strong> {{ result.severity }}<br>
+                                    <strong>Details:</strong>
+                                    <pre class="bg-light p-3">{{ result.details }}</pre>
+                                    <strong>Scan Time:</strong> {{ result.timestamp }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+        
+        
+
+        <!-- Findings Table -->
+        <div class="mt-4">
+            <h4>Scan Results</h4>
+            <table class="table table-bordered table-hover mt-2">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Vulnerability</th>
+                        <th>Category</th>
+                        <th>Severity</th>
+                        <th>Subdomain</th>
+                        <th>Details</th>
+                        <th>Scan Time</th>
+                    </tr>
+                </thead>
+                <tbody id="resultsTable">
+                    {% for result in parsed_results %}
+                    <tr data-domain="{{ result.target }}">
+                        <td>{{ result.vulnerability }}</td>
+                        <td>{{ result.bug_class }}</td>
+                        <td>
+                            <span class="badge 
+                                {% if result.severity == 'critical' %}bg-danger
+                                {% elif result.severity == 'high' %}bg-warning
+                                {% elif result.severity == 'medium' %}bg-primary
+                                {% elif result.severity == 'low' %}bg-success
+                                {% else %}bg-secondary{% endif %}">
+                                {{ result.severity|title }}
+                            </span>
+                        </td>
+                        <td>{{ result.subdomain }}</td>
+                        <td>
+                            <button class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#detailsModal{{ forloop.counter }}">
+                                View
+                            </button>
+                        </td>
+                        <td>{{ result.timestamp }}</td>
+                    </tr>
+
+                    <!-- Modal for Scan Details -->
+                    <div class="modal fade" id="detailsModal{{ forloop.counter }}" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Scan Details</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <strong>Subdomain:</strong> {{ result.subdomain }}<br>
+                                    <strong>Category:</strong> {{ result.bug_class }}<br>
+                                    <strong>Severity:</strong> {{ result.severity }}<br>
+                                    <strong>Details:</strong>
+                                    <pre class="bg-light p-3">{{ result.details }}</pre>
+                                    <strong>Scan Time:</strong> {{ result.timestamp }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- JavaScript for Filtering -->
+    <script>
+        document.getElementById("domainSelect").addEventListener("change", function() {
+            let selectedDomain = this.value;
+            let rows = document.querySelectorAll("#resultsTable tr");
+            rows.forEach(row => {
+                row.style.display = selectedDomain === "" || row.getAttribute("data-domain") === selectedDomain ? "" : "none";
+            });
+        });
+
+        document.getElementById("searchInput").addEventListener("input", function() {
+            let searchText = this.value.toLowerCase();
+            let rows = document.querySelectorAll("#resultsTable tr");
+            rows.forEach(row => {
+                row.style.display = row.textContent.toLowerCase().includes(searchText) ? "" : "none";
+            });
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

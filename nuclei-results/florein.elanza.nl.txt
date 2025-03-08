@@ -1,0 +1,26 @@
+[missing-sri] [http] [info] https://florein.elanza.nl ["https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800&display=swap","https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap"]
+[waf-detect:securesphere] [http] [info] https://florein.elanza.nl
+[deprecated-tls:tls_1.1] [ssl] [info] florein.elanza.nl:443 ["tls11"]
+[weak-cipher-suites:tls-1.0] [ssl] [low] florein.elanza.nl:443 ["[tls10 TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA]"]
+[tls-version] [ssl] [info] florein.elanza.nl:443 ["tls10"]
+[deprecated-tls:tls_1.0] [ssl] [info] florein.elanza.nl:443 ["tls10"]
+[weak-cipher-suites:tls-1.1] [ssl] [low] florein.elanza.nl:443 ["[tls11 TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA]"]
+[tls-version] [ssl] [info] florein.elanza.nl:443 ["tls11"]
+[tls-version] [ssl] [info] florein.elanza.nl:443 ["tls12"]
+[tls-version] [ssl] [info] florein.elanza.nl:443 ["tls13"]
+[addeventlistener-detect] [http] [info] https://florein.elanza.nl
+[options-method] [http] [info] https://florein.elanza.nl ["GET,HEAD"]
+[tech-detect:google-font-api] [http] [info] https://florein.elanza.nl
+[tech-detect:express] [http] [info] https://florein.elanza.nl
+[http-missing-security-headers:cross-origin-resource-policy] [http] [info] https://florein.elanza.nl
+[http-missing-security-headers:permissions-policy] [http] [info] https://florein.elanza.nl
+[http-missing-security-headers:clear-site-data] [http] [info] https://florein.elanza.nl
+[http-missing-security-headers:cross-origin-embedder-policy] [http] [info] https://florein.elanza.nl
+[http-missing-security-headers:cross-origin-opener-policy] [http] [info] https://florein.elanza.nl
+[robots-txt-endpoint] [http] [info] https://florein.elanza.nl/robots.txt
+[security-txt] [http] [info] https://florein.elanza.nl/.well-known/security.txt ["mailto:security@elanza.nl"]
+[soa-detect:google-cloud-platform] [dns] [info] florein.elanza.nl
+[caa-fingerprint] [dns] [info] florein.elanza.nl
+[dns-saas-service-detection:google-hosted] [dns] [info] florein.elanza.nl ["ghs.googlehosted.com"]
+[ssl-issuer] [ssl] [info] florein.elanza.nl:443 ["Google Trust Services"]
+[ssl-dns-names] [ssl] [info] florein.elanza.nl:443 ["florein.elanza.nl"]

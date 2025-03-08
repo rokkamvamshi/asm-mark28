@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <style>
+        .team-member img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+        .team-member:hover img {
+            transform: scale(1.1);
+        }
+        .team-member .linkedin-icon {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2rem;
+            color: #0A66C2;
+        }
+        .team-member:hover .linkedin-icon {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-5">
+        <header class="d-flex justify-content-between align-items-center mb-4">
+            <img src="logo.png" alt="Logo" class="logo">
+            <button onclick="window.location.href='index.html'" class="btn btn-primary">Back to Home</button>
+        </header>
+
+        <section class="text-center mb-5">
+            <h1>About Our SaaS Solution</h1>
+            <p>Our mission is to provide businesses with robust, real-time attack surface management solutions that empower them to identify vulnerabilities, safeguard their digital assets, and maintain a secure online presence.</p>
+            <p>We combine cutting-edge technology, intuitive design, and a passion for cybersecurity to build a platform that simplifies vulnerability management for enterprises of all sizes.</p>
+        </section>
+        <section class="text-center">
+            <h2 class="mb-4">Our Team</h2>
+            <div class="row justify-content-center">
+                <!-- Single top team member -->
+                <div class="col-12 col-md-3 text-center team-member position-relative">
+                    <img src="../static/images/ceo.jpg" alt="Jane Doe">
+                    <h3>Rokkam Vamshi</h3>
+                    <p>Team Lead</p>
+                    <a href="#" class="linkedin-icon position-absolute"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <!-- Four team members below -->
+                <div class="col-6 col-md-3 text-center team-member position-relative">
+                    <img src="../static/images/ceo.jpg" alt="John Smith">
+                    <h3>J Kartheek</h3>
+                    <p>Team member 1</p>
+                    <a href="#" class="linkedin-icon position-absolute"><i class="fab fa-linkedin"></i></a>
+                </div>
+                <div class="col-6 col-md-3 text-center team-member position-relative">
+                    <img src="../static/images/ciso.jpg" alt="Emily White">
+                    <h3>P Kavya</h3>
+                    <p>Team member 2</p>
+                    <a href="#" class="linkedin-icon position-absolute"><i class="fab fa-linkedin"></i></a>
+                </div>
+                <div class="col-6 col-md-3 text-center team-member position-relative">
+                    <img src="../static/images/cto.jpg" alt="Sarah Brown">
+                    <h3>Sarah Brown</h3>
+                    <p>UI/UX Designer</p>
+                    <a href="#" class="linkedin-icon position-absolute"><i class="fab fa-linkedin"></i></a>
+                </div>
+                <div class="col-6 col-md-3 text-center team-member position-relative">
+                    <img src="../static/images/designer.jpg" alt="Mike Johnson">
+                    <h3>Mike Johnson</h3>
+                    <p>Lead Developer</p>
+                    <a href="#" class="linkedin-icon position-absolute"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+        </section>        
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js"></script>
+</body>
+</html>

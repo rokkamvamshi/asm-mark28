@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perform Nuclei Scan</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 600px;
+            margin-top: 50px;
+        }
+        .card {
+            border-radius: 12px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .btn-custom {
+            background-color: #007bff;
+            color: white;
+            transition: all 0.3s ease-in-out;
+        }
+        .btn-custom:hover {
+            background-color: #0056b3;
+        }
+        .navbar-custom {
+            position: absolute;
+            top: 10px;
+            right: 30px;
+            z-index: 999;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light navbar-custom">
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" 
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                Menu
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <li><a class="dropdown-item" href="/view">Back</a></li>
+                <li><a class="dropdown-item" href="/profile">Profile</a></li>
+                <li><a class="dropdown-item" href="/logout">Logout</a></li>
+                <li><a class="dropdown-item" href="/scan">Scan for Vulns</a></li>
+                <li><a class="dropdown-item" href="/views_scans">My Previous scan</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <form method="post">
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Perform Nuclei Scan</h2>
+
+        <!-- Domain Selection -->
+        <div class="form-group">
+            <label for="domain">Select a Domain:</label>
+            <select id="domain" class="form-control">
+                <option value="" disabled selected>Select from dropdown</option>
+                <!-- Domains populated dynamically via Jinja -->
+                {% for domain in domains %}
+                    <option value="{{ domain }}">{{ domain }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- Subdomain Selection (Populated Dynamically) -->
+        <div class="form-group mt-3">
+            <label for="subdomain">Select a Subdomain:</label>
+            <select id="subdomain" class="form-control" >
+                <option value="" selected>Select from dropdown</option>
+                <!-- Subdomains will be dynamically populated via JavaScript -->
+            </select>
+        </div>
+
+        <!-- Bug Class Selection -->
+        <div class="form-group mt-3">
+            <label for="bug_class">Select Bug Class:</label>
+            <select id="bug_class" class="form-control">
+            <option value="" disabled selected>Select from dropdown</option>
+                <option value="xss">Check for XSS</option>
+                <option value="sqli">Check for SQL Injection</option>
+                <option value="misconfig">Check for Misconfigurations</option>
+                <option value="rce">Check for RCE</option>
+                <option value="default-login">Check for Default Logins</option>
+                <option value="exposed-panels">Check for Exposed Panels</option>
+                <option value="exposures">Check for any Exposures</option>
+                <option value="takeovers">Check for any Takeovers </option>
+                <option value="technologies">Check for Technologies</option>
+                <option value="token-spray">Check for Token Spray</option>
+                <option value="osint">Perform OSINT</option>
+                <option value="cves">Check for CVEs</option>
+                <option value="all">Check for All (May take longer)</option>
+            </select>
+        </div>
+        {% csrf_token %} 
+        <!-- Scan Now Button -->
+        <button id="scanBtn" class="btn btn-primary mt-4" type="submit">Start Scan</button>
+
+        <!-- Result Display Section -->
+        <div id="scanResults" class="mt-4" style="display:none;">
+            <h4>Scan Results:</h4>
+            <pre id="resultContent"></pre>
+        </div>
+    </div>
+    </form>
+
+    <script>
+        // Fetch subdomains when a domain is selected
+        document.getElementById('domain').addEventListener('change', function() {
+            let domain = this.value;
+            if (domain) {
+                fetch(`/get_subdomains/${domain}/`)
+                    .then(response => response.json())
+                    .then(data => {
+                        let subdomainDropdown = document.getElementById('subdomain');
+                        // Populate subdomains dynamically
+                        subdomainDropdown.innerHTML='';
+                        data.subdomains.forEach(subdomain => {
+                            subdomainDropdown.innerHTML += `<option value="${subdomain}">${subdomain}</option>`;
+                        });
+                        subdomainDropdown.disabled = false; // Enable the subdomain dropdown
+                    })
+            }
+        });
+
+        // Enable scan button once subdomain is selected
+    document.getElementById('subdomain').addEventListener('change', function() {
+    document.getElementById('scanBtn').disabled = false;
+        });
+        document.getElementById('scanBtn').addEventListener('click', function(e) {
+    e.preventDefault();
+
+    // Collect selected values
+    var domain = document.getElementById('domain').value;
+    var subdomain = document.getElementById('subdomain').value;
+    var bugClass = document.getElementById('bug_class').value;
+
+    // Check if all fields are selected
+    if (!domain || !subdomain || !bugClass) {
+        alert("Please select all fields.");
+        return;
+    }
+
+    // Create JSON object
+    var scanData = {
+        domain: domain,
+        subdomain: subdomain,
+        bug_class: bugClass
+    };
+
+    // Send JSON data via AJAX to Django view
+    fetch('/save_scan/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: JSON.stringify(scanData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === "success") {
+            alert(data);
+            alert("Scan data saved successfully!");
+        } else {
+            alert(data.status);
+            alert("Error saving scan data: " + data.message);
+        }
+    })
+    .catch(error => console.error('Error:', error));
+});
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
